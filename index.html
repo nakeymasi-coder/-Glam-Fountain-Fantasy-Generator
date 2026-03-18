@@ -1,0 +1,897 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Glam Fantasy AI Generator</title>
+  <style>
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      padding: 20px;
+      font-family: Arial, sans-serif;
+      background:
+        radial-gradient(circle at top, rgba(255, 170, 0, 0.12), transparent 30%),
+        radial-gradient(circle at right, rgba(0, 255, 255, 0.08), transparent 30%),
+        linear-gradient(180deg, #07070d, #111122 55%, #080810);
+      color: #ffffff;
+    }
+
+    .wrap {
+      max-width: 1450px;
+      margin: 0 auto;
+    }
+
+    h1 {
+      margin: 0 0 10px;
+      color: #ffd86b;
+      font-size: 2rem;
+      letter-spacing: 0.5px;
+    }
+
+    .subtext {
+      color: #d7d7ea;
+      margin-bottom: 20px;
+      line-height: 1.5;
+    }
+
+    .panel {
+      background: rgba(255,255,255,0.04);
+      border: 1px solid rgba(255,255,255,0.08);
+      border-radius: 18px;
+      padding: 18px;
+      margin-bottom: 18px;
+      backdrop-filter: blur(8px);
+      box-shadow: 0 10px 30px rgba(0,0,0,0.25);
+    }
+
+    .howto-title {
+      color: #ffd86b;
+      font-size: 1.1rem;
+      font-weight: bold;
+      margin: 0 0 10px;
+    }
+
+    .howto-steps {
+      margin: 0;
+      padding-left: 20px;
+      color: #d7d7ea;
+      line-height: 1.6;
+    }
+
+    .howto-steps li {
+      margin-bottom: 6px;
+    }
+
+    .top-actions {
+      display: grid;
+      grid-template-columns: 1fr 180px;
+      gap: 12px;
+      margin-bottom: 18px;
+    }
+
+    .action-bar {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-bottom: 18px;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 14px;
+    }
+
+    .field {
+      display: flex;
+      flex-direction: column;
+      min-height: 320px;
+    }
+
+    label {
+      font-size: 0.95rem;
+      font-weight: bold;
+      color: #ffd86b;
+      margin-bottom: 6px;
+    }
+
+    .field-note {
+      font-size: 0.78rem;
+      color: #bfc6df;
+      margin-bottom: 8px;
+      line-height: 1.35;
+    }
+
+    select, textarea, button {
+      border-radius: 12px;
+      border: 1px solid rgba(255,255,255,0.12);
+      background: #151528;
+      color: #fff;
+      font-size: 14px;
+    }
+
+    select, textarea {
+      width: 100%;
+      padding: 12px;
+    }
+
+    select[multiple] {
+      min-height: 235px;
+    }
+
+    textarea {
+      min-height: 260px;
+      resize: vertical;
+      line-height: 1.5;
+    }
+
+    button {
+      padding: 12px 14px;
+      cursor: pointer;
+      font-weight: bold;
+      transition: 0.2s ease;
+      min-width: 160px;
+    }
+
+    button:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 8px 18px rgba(0,0,0,0.25);
+    }
+
+    .gold { background: linear-gradient(135deg, #c68a00, #ffcf5a); color: #111; }
+    .pink { background: linear-gradient(135deg, #ff4fc3, #ff84dd); color: #111; }
+    .blue { background: linear-gradient(135deg, #00b6ff, #79e3ff); color: #111; }
+    .dark { background: linear-gradient(135deg, #22243c, #34385c); color: #fff; }
+
+    .output-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 18px;
+    }
+
+    .small-note {
+      color: #bfc6df;
+      font-size: 0.88rem;
+      margin-top: 8px;
+      line-height: 1.45;
+    }
+
+    @media (max-width: 950px) {
+      .output-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .top-actions {
+        grid-template-columns: 1fr;
+      }
+
+      .field {
+        min-height: auto;
+      }
+
+      select[multiple] {
+        min-height: 180px;
+      }
+
+      .action-bar {
+        flex-direction: column;
+      }
+
+      button {
+        width: 100%;
+        min-width: unset;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <h1>✨ Glam Fantasy AI Generator</h1>
+    <div class="subtext">
+      Build a museum-worthy surreal fantasy masterpiece with luxury editorial energy, celestial dreamscape drama, Afrofuturist elegance, giant-scale symbolism, cinematic lighting, and stacked multi-select styling.
+    </div>
+
+    <div class="panel">
+      <div class="howto-title">How to Use</div>
+      <ol class="howto-steps">
+        <li>Pick one or more options in each section. This generator uses <strong>multi-select</strong>.</li>
+        <li>On desktop, hold <strong>Ctrl</strong> or <strong>Cmd</strong> to select more than one option.</li>
+        <li>Use <strong>Generate Prompts</strong> to create both the photo prompt and the video prompt.</li>
+        <li>Use <strong>Randomize</strong> for a fresh mix. Animal sections are not forced, so you won’t keep getting the same damn lion.</li>
+        <li>Use <strong>Clear All</strong> to reset everything fast.</li>
+        <li>Use the copy buttons to copy only the prompt you want.</li>
+        <li>Use a preset if you want a fast starting point, then tweak whatever you want.</li>
+      </ol>
+    </div>
+
+    <div class="panel">
+      <div class="top-actions">
+        <div class="field" style="min-height:auto;">
+          <label for="presetSelect">Preset</label>
+          <select id="presetSelect">
+            <option value="None">None</option>
+          </select>
+        </div>
+        <div class="field" style="justify-content:end; min-height:auto;">
+          <label style="opacity:0;">Apply</label>
+          <button class="gold" onclick="applyPreset()">🔥 Apply Preset</button>
+        </div>
+      </div>
+
+      <div class="action-bar">
+        <button class="gold" onclick="generatePrompt()">✨ Generate Prompts</button>
+        <button class="pink" onclick="randomize()">🎲 Randomize</button>
+        <button class="blue" onclick="clearAll()">🧹 Clear All</button>
+        <button class="dark" onclick="copyPhotoPrompt()">📋 Copy Photo Prompt</button>
+        <button class="dark" onclick="copyVideoPrompt()">🎬 Copy Video Prompt</button>
+      </div>
+
+      <div class="small-note">
+        Multi-select is on for every category. On desktop, hold <strong>Ctrl</strong> or <strong>Cmd</strong> to choose more than one. Randomizer strongly favors no animal unless you pick one yourself.
+      </div>
+
+      <div class="grid" id="controls"></div>
+    </div>
+
+    <div class="output-grid">
+      <div class="panel">
+        <label for="photoOutput">🖼️ Photo Prompt</label>
+        <textarea id="photoOutput" placeholder="Your photo prompt will appear here..."></textarea>
+      </div>
+
+      <div class="panel">
+        <label for="videoOutput">🎥 Video Script Prompt</label>
+        <textarea id="videoOutput" placeholder="Your video prompt will appear here..."></textarea>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const categories = {
+      "Main Subject": [
+        "None","Celestial Goddess","Cosmic Empress","Divine Feminine","Dream Entity","Ethereal Muse","Fantasy Queen","Futuristic Oracle","Galactic Guardian","Glam Goddess","Golden Deity","High Fashion Muse","Immortal Beauty","Light Weaver","Luxe Model","Luxury Empress","Mythic Queen","Mystic Woman","Neon Queen","Royal Icon","Sculptural Goddess","Space Muse","Starborn Queen","Surreal Muse","Timeless Beauty","Visionary Woman","Water Spirit","Winged Goddess","Zen Goddess","Astral Being"
+      ],
+      "Eye Color": [
+        "None","Amber","Amethyst","Aqua","Black","Blue","Bronze","Copper","Cosmic Glow","Crystal","Emerald","Gold","Gradient Glow","Green","Hazel","Honey","Ice Blue","Lavender","Magenta","Multi Color","Neon Pink","Opal","Purple","Red","Silver","Teal","Turquoise","Violet","White Glow","Yellow"
+      ],
+      "Environment": [
+        "None","Celestial Garden","Crystal Palace","Dark Fantasy City","Dream Plaza","Floating City","Futuristic City","Galaxy Realm","Glass World","Glow Garden","Golden Kingdom","Heavenly Sky","Light Realm","Luxury Plaza","Magic Forest","Mirror World","Mystic Temple","Neon City","Night Oasis","Ocean Realm","Otherworld","Royal Garden","Shadow Realm","Sky Kingdom","Space Realm","Star Field","Surreal Desert","Temple Ruins","Urban Luxury","Water World"
+      ],
+      "Fountain Type": [
+        "None","Butterfly Fountain","Celestial Halo Fountain","Crown Fountain","Crystal Fountain","Dove Fountain","Dragon Fountain","Flame Fountain","Floral Bloom Fountain","Galaxy Orb Fountain","Geometric Light Fountain","Glass Lotus Fountain","Golden Mask Fountain","Heart Fountain","Horse Fountain","Hourglass Fountain","Jewel Fountain","Lion Fountain","Moon Fountain","Peacock Fountain","Phoenix Fountain","Rose Fountain","Scorpion Fountain","Seashell Fountain","Serpent Fountain","Star Fountain","Sun Fountain","Swan Fountain","Tiger Fountain","Zodiac Fountain"
+      ],
+      "Rose Style": [
+        "None","Bloom Burst","Cosmic Bloom","Crystal Rose","Divine Bloom","Energy Bloom","Fire Rose","Flame Bloom","Glass Rose","Glow Rose","Gold Rose","Holographic Rose","Ice Rose","Light Rose","Liquid Rose","Metal Rose","Neon Rose","Petal Burst","Radiant Rose","Rainbow Rose","Sculpted Rose","Shimmer Rose","Soft Glow Rose","Sparkle Rose","Spiral Rose","Starlight Rose","Sunset Rose","Velvet Rose","Water Rose","Wind Rose"
+      ],
+      "Animal Style": [
+        "None","Cosmic Style","Crystal Style","Cyber Style","Divine Style","Energy Style","Fire Style","Floating Style","Galaxy Style","Ghost Style","Glow Style","Gold Style","Holographic Style","Ice Style","Light Style","Metal Style","Mystic Style","Neon Style","Phantom Style","Plasma Style","Rainbow Style","Royal Style","Shadow Style","Shimmer Style","Solar Style","Spirit Style","Stone Style","Surreal Style","Water Style","Wind Style"
+      ],
+      "Character Beauty": [
+        "None","Airbrushed Radiance","Angelic Glow","Celestial Glam","Chiseled Editorial","Crystal Skin Finish","Divine Bone Structure","Dreamy Soft Glam","Ethereal Beauty","Glass Skin","Glossy Luxe Beauty","Golden Highlighted Skin","High Fashion Contour","Hyper Polished","Luminous Bronze Glow","Metallic Glam","Moonlit Skin","Opulent Beauty","Pearlescent Glow","Radiant Editorial","Regal Sculpted Features","Royal Glam","Satin Skin Finish","Shimmer Kissed Skin","Silken Glow","Soft Focus Beauty","Statuesque Beauty","Sultry Luxe Finish","Velvet Skin Finish","Wet Gloss Beauty"
+      ],
+      "Hair Style": [
+        "None","Afro","Bantu Knots","Bob Cut","Braided Updo","Braids","Bun","Curls","Dreadlocks","Fishtail Braid","Flowing Waves","Half Up Half Down","High Ponytail","Knot Bun","Layered Hair","Locs","Long Straight","Messy Bun","Pixie Cut","Puff","Slick Back","Soft Waves","Spiral Curls","Straight Hair","Top Knot","Twists","Voluminous Hair","Wavy Bob","Wet Look","Wind Blown"
+      ],
+      "Hair + Headpiece": [
+        "None","Beaded Crown","Celestial Halo","Chain Headpiece","Cosmic Horns","Crystal Crown","Diamond Veil","Feather Halo","Filigree Headpiece","Floral Crown","Gem Tiara","Gold Crown","Golden Filigree Mask","Halo Rings","Heavenly Veil","Jeweled Headband","Luxe Turban","Metallic Halo","Moon Crown","Orb Halo","Pearl Crown","Radiant Headpiece","Royal Head Wrap","Sculptural Headpiece","Star Halo","Sunburst Crown","Velvet Bow Headpiece","Winged Halo","Wrapped Headpiece","Zodiac Halo"
+      ],
+      "Outfit / Body Style": [
+        "None","Angelic Gown","Armored Corset","Bodycon Couture","Celestial Robe","Chain Dress","Couture Cape","Crystal Bodysuit","Draped Silk","Editorial Armor","Feathered Gown","Fitted Mermaid Dress","Floating Veils","Golden Corset Gown","High Slit Gown","Liquid Metal Dress","Luxe Jumpsuit","Metallic Bodice","Mythic Couture","Off Shoulder Gown","One Shoulder Dress","Ornate Ballgown","Regal Train Dress","Royal Draped Gown","Sculpted Fashion Suit","Sheer Embellished Dress","Statement Cloak","Structured Couture","Velvet Gown","Winged Silhouette"
+      ],
+      "Ethnicity": [
+        "None","Afro Caribbean","African American","Bahamian","Barbadian","Black Brazilian","Congolese","Dominican","East African","Ethiopian","Gambian","Ghanaian","Haitian","Igbo Nigerian","Jamaican","Kenyan","Liberian","Malian","Mixed Black Heritage","Nubian","Rwandan","Senegalese","Sierra Leonean","Somali","South African","Sudanese","Tanzanian","Trinidadian","Ugandan","West African"
+      ],
+      "Hair Color": [
+        "None","Ash Blonde","Black","Blue","Bronze","Brown","Champagne","Copper","Crimson","Emerald","Gold","Gradient","Green","Honey Blonde","Lavender","Magenta","Midnight Blue","Multi Color","Neon Pink","Ombre","Orange","Pastel Pink","Platinum","Purple","Red","Rose Gold","Silver","Teal","Turquoise","White"
+      ],
+      "Hair Gems": [
+        "None","Amber Pins","Butterfly Clips","Celestial Chains","Crystal Dust","Crystal Pins","Diamond Thread","Emerald Beads","Gem Clusters","Gem Dust","Glitter Pins","Gold Beads","Gold Hair Rings","Gold Thread","Halo Pearls","Holographic Crystals","Jeweled Stars","Lunar Pearls","Metallic Charms","Moon Gems","Opal Pins","Pearl Chains","Pearl Dust","Radiant Stones","Rhinestone Veil","Rose Gold Beads","Silver Chains","Star Pins","Sunburst Pins","Zodiac Charms"
+      ],
+      "Animal": [
+        "None","Bear","Butterfly","Cheetah","Deer","Dolphin","Dragon","Eagle","Elephant","Falcon","Fox","Horse","Jaguar","Koi Fish","Leopard","Lion","Owl","Panther","Peacock","Phoenix","Rabbit","Raven","Serpent","Shark","Swan","Tiger","Unicorn","Whale","Wolf","Zebra"
+      ],
+      "Butterflies": [
+        "None","Amber Butterflies","Black Velvet Butterflies","Blue Glass Butterflies","Celestial Butterflies","Chrome Butterflies","Crystal Butterflies","Emerald Butterflies","Fire Glow Butterflies","Floating Neon Butterflies","Galaxy Butterflies","Ghost Butterflies","Glitter Butterflies","Gold Foil Butterflies","Golden Butterflies","Holographic Butterflies","Iridescent Butterflies","Lavender Butterflies","Light Trail Butterflies","Magenta Butterflies","Moonlit Butterflies","Opal Butterflies","Pastel Dream Butterflies","Pink Glow Butterflies","Rainbow Butterflies","Rose Gold Butterflies","Shadow Butterflies","Silver Butterflies","Teal Butterflies","White Glow Butterflies"
+      ],
+      "Zodiac Energy": [
+        "None","Ancient Zodiac Etching","Aquarius Electric Vision","Aries Fire Aura","Astro Light Beams","Astrology Sigil Light","Cancer Moon Energy","Capricorn Elite Energy","Celestial Chart Overlay","Celestial Zodiac Pulse","Cosmic Zodiac Ring","Floating Zodiac Symbols","Galaxy Zodiac Aura","Gemini Dual Light","Golden Zodiac Crown","Leo Royal Radiance","Libra Balance Glow","Mystic Zodiac Lines","Neon Zodiac Symbols","Pisces Dream Flow","Sagittarius Cosmic Flame","Scorpio Dark Power","Star Map Glow","Taurus Luxury Glow","Virgo Clean Aura","Zodiac Aura Burst","Zodiac Constellation Halo","Zodiac Energy Field","Zodiac Particle Dust","Zodiac Symbol Orbit"
+      ],
+      "Color Palette": [
+        "None","Black Gold","Blue Purple","Bright Neon","Bronze Glow","Coral Pink","Cosmic Mix","Crimson Gold","Dark Luxury","Dark Red","Electric Blue","Emerald Gold","Fire Glow","Gold White","Holographic","Lavender Dream","Midnight Blue","Neon Glow","Ocean Blue","Pastel Dream","Pink Gold","Purple Gold","Rainbow","Rose Gold","Silver Blue","Sunset","Teal Gold","Violet Glow","Warm Amber","White Gold"
+      ],
+      "Extra Elements": [
+        "None","Aura Glow","Aura Rings","Bokeh Lights","Cosmic Dust","Dream Fog","Energy Sparks","Energy Waves","Fireflies","Floating Orbs","Floating Petals","Floating Symbols","Glitter Rain","Glow Dust","Glow Waves","Gold Dust","Laser Glow","Lens Flare","Light Beams","Light Rings","Light Trails","Magic Lines","Magic Particles","Mist","Neon Trails","Shadow Mist","Smoke","Sparkles","Stars","Water Reflection"
+      ],
+      "Flowers": [
+        "None","Anemones","Bird Of Paradise","Black Roses","Blue Orchids","Calla Lilies","Camellias","Carnations","Celestial Roses","Cherry Blossoms","Chrysanthemums","Dahlias","Daisies","Gardenias","Glass Roses","Golden Roses","Hibiscus","Hydrangeas","Irises","Jasmine","Lilies","Lotus","Magnolias","Neon Roses","Orchids","Peonies","Ranunculus","Roses","Sunflowers","Tulips"
+      ],
+      "Lashes": [
+        "None","Airy Lashes","Angled Glam Lashes","Cat Eye Lashes","Cluster Lashes","Curled Lashes","Doll Eye Lashes","Dramatic Flutter Lashes","Editorial Spike Lashes","Feathered Lashes","Flared Lashes","Full Volume Lashes","Glossy Glam Lashes","Layered Silk Lashes","Long Wispy Lashes","Luxe Mink Lashes","Minimal Chic Lashes","Piecey Glam Lashes","Plush Lashes","Separated Wispy Lashes","Sharp Winged Lashes","Soft Flutter Lashes","Soft Wispy Lashes","Spiky Editorial Lashes","Starburst Lashes","Textured Glam Lashes","Ultra Dramatic Lashes","Velvet Lashes","Volume Fan Lashes","Winged Lashes"
+      ],
+      "Elements": [
+        "None","Air","Ash","Celestial Light","Cloud","Cosmic Energy","Crystal","Earth","Electricity","Embers","Fire","Fog","Glass","Gold Dust","Ice","Lava","Light","Lightning","Metal","Mist","Moonlight","Plasma","Shadow","Smoke","Snow","Solar Light","Spirit Energy","Stars","Water","Wind"
+      ],
+      "Accessories": [
+        "None","Anklets","Arm Cuffs","Body Chains","Bracelets","Brooch","Cameo Pin","Chandelier Earrings","Choker","Cocktail Ring","Crown","Crystal Collar","Diamond Earrings","Ear Cuffs","Face Chains","Finger Armor","Gem Belt","Gloves","Gold Bangles","Gold Mask","Hair Chains","Layered Necklaces","Nose Ring","Opal Jewelry","Pearl Earrings","Pendant Necklace","Shoulder Jewelry","Statement Earrings","Tiara","Waist Chain"
+      ],
+      "Hair Edges": [
+        "None","Art Deco Edges","Classic Laid Edges","Cloud Curl Edges","Curved Edges","Defined Swirls","Feathered Baby Hairs","Floating Curl Edges","Glossed Edges","Heart Loop Edges","Minimal Sleek Edges","Moon Curve Edges","Ornamental Swirls","Petal Edges","Royal Swirl Edges","Sculpted Spiral Edges","Sharp Sculpted Edges","Side Curl Edges","Signature Sleek Edges","Soft Brushed Edges","Soft Curled Edges","Spiral Temple Edges","Star Curve Edges","Statement Swirls","Styled Flick Edges","Swoop Edges","Temple Spiral Edges","Ultra Laid Edges","Wave Pattern Edges","Whisper Edges"
+      ],
+      "Skin Tone": [
+        "None","Amber Brown","Bronzed Cocoa","Caramel Brown","Chestnut Brown","Cinnamon Bronze","Copper Brown","Deep Ebony","Deep Mahogany","Espresso Brown","Golden Brown","Honey Brown","Ivory Brown","Mocha Brown","Olive Brown","Radiant Bronze","Rich Cocoa","Sable Brown","Soft Caramel","Sunlit Brown","Toffee Brown","Velvet Chestnut","Warm Almond Brown","Warm Beige Brown","Warm Bronze","Warm Cinnamon","Warm Cocoa","Warm Honey Brown","Warm Mahogany","Walnut Brown"
+      ],
+      "Camera Control": [
+        "None","Aerial View","Close Up","Crane Shot","Direct Front View","Dolly Zoom","Dutch Angle","Eye Level","Extreme Close Up","Far Wide Shot","First Person","Floating Orbit","Full Body Shot","Handheld Motion","Hero Shot","High Angle","Low Angle","Macro Detail","Medium Shot","Orbit Shot","Over Shoulder","Pan Shot","Profile View","Slow Push In","Static Framing","Three Quarter View","Tilted Frame","Top Down View","Tracking Shot","Wide Cinematic"
+      ],
+      "Light and Shadow Control": [
+        "None","Ambient Glow","Back Lighting","Bounce Light","Celestial Glow","Cinematic Contrast","Color Gel Lighting","Cool Shadow Wash","Deep Shadow Sculpting","Diffused Light","Directional Light","Dramatic Spotlight","Dreamy Haze Light","Edge Rim Light","Electric Glow","Golden Highlights","Halo Illumination","Hard Contrast","High Contrast Drama","Luminous Reflection","Mixed Light Sources","Moody Night Light","Neon Light Spill","Reflective Glow","Shadow Play","Soft Dream Light","Soft Rim Light","Studio Beauty Light","Volumetric Rays","Warm Gold Glow"
+      ]
+    };
+
+    const presets = {
+      "Aurora Queen": {
+        "Main Subject": ["Royal Icon"],
+        "Eye Color": ["Emerald"],
+        "Environment": ["Luxury Plaza"],
+        "Fountain Type": ["Crown Fountain"],
+        "Rose Style": ["None"],
+        "Animal Style": ["Royal Style"],
+        "Character Beauty": ["Glossy Luxe Beauty"],
+        "Hair Style": ["Flowing Waves"],
+        "Hair + Headpiece": ["Crystal Crown"],
+        "Outfit / Body Style": ["Golden Corset Gown"],
+        "Ethnicity": ["West African"],
+        "Hair Color": ["Black"],
+        "Hair Gems": ["Gold Hair Rings"],
+        "Animal": ["None"],
+        "Butterflies": ["Golden Butterflies"],
+        "Zodiac Energy": ["Leo Royal Radiance"],
+        "Color Palette": ["Pink Gold"],
+        "Extra Elements": ["Floating Orbs"],
+        "Flowers": ["Golden Roses"],
+        "Lashes": ["Winged Lashes"],
+        "Elements": ["Water"],
+        "Accessories": ["Statement Earrings"],
+        "Hair Edges": ["Sculpted Spiral Edges"],
+        "Skin Tone": ["Deep Mahogany"],
+        "Camera Control": ["Low Angle"],
+        "Light and Shadow Control": ["High Contrast Drama"]
+      },
+      "Celestial Rose Empress": {
+        "Main Subject": ["Cosmic Empress"],
+        "Eye Color": ["Gold"],
+        "Environment": ["Celestial Garden"],
+        "Fountain Type": ["Rose Fountain"],
+        "Rose Style": ["Cosmic Bloom"],
+        "Animal Style": ["Spirit Style"],
+        "Character Beauty": ["Celestial Glam"],
+        "Hair Style": ["Braided Updo"],
+        "Hair + Headpiece": ["Celestial Halo"],
+        "Outfit / Body Style": ["Regal Train Dress"],
+        "Ethnicity": ["Nubian"],
+        "Hair Color": ["Midnight Blue"],
+        "Hair Gems": ["Lunar Pearls"],
+        "Animal": ["Butterfly"],
+        "Butterflies": ["Celestial Butterflies"],
+        "Zodiac Energy": ["Zodiac Constellation Halo"],
+        "Color Palette": ["Purple Gold"],
+        "Extra Elements": ["Stars"],
+        "Flowers": ["Celestial Roses"],
+        "Lashes": ["Starburst Lashes"],
+        "Elements": ["Celestial Light"],
+        "Accessories": ["Layered Necklaces"],
+        "Hair Edges": ["Moon Curve Edges"],
+        "Skin Tone": ["Golden Brown"],
+        "Camera Control": ["Wide Cinematic"],
+        "Light and Shadow Control": ["Celestial Glow"]
+      },
+      "Cosmic Black Gold Muse": {
+        "Main Subject": ["High Fashion Muse"],
+        "Eye Color": ["Amber"],
+        "Environment": ["Dark Fantasy City"],
+        "Fountain Type": ["Golden Mask Fountain"],
+        "Rose Style": ["None"],
+        "Animal Style": ["Gold Style"],
+        "Character Beauty": ["Regal Sculpted Features"],
+        "Hair Style": ["Slick Back"],
+        "Hair + Headpiece": ["Golden Filigree Mask"],
+        "Outfit / Body Style": ["Liquid Metal Dress"],
+        "Ethnicity": ["African American"],
+        "Hair Color": ["Black"],
+        "Hair Gems": ["Diamond Thread"],
+        "Animal": ["Panther"],
+        "Butterflies": ["Black Velvet Butterflies"],
+        "Zodiac Energy": ["Scorpio Dark Power"],
+        "Color Palette": ["Black Gold"],
+        "Extra Elements": ["Gold Dust"],
+        "Flowers": ["Black Roses"],
+        "Lashes": ["Editorial Spike Lashes"],
+        "Elements": ["Gold Dust"],
+        "Accessories": ["Body Chains"],
+        "Hair Edges": ["Classic Laid Edges"],
+        "Skin Tone": ["Deep Ebony"],
+        "Camera Control": ["Three Quarter View"],
+        "Light and Shadow Control": ["Deep Shadow Sculpting"]
+      },
+      "Crystal Garden Goddess": {
+        "Main Subject": ["Glam Goddess"],
+        "Eye Color": ["Silver"],
+        "Environment": ["Crystal Palace"],
+        "Fountain Type": ["Crystal Fountain"],
+        "Rose Style": ["None"],
+        "Animal Style": ["Crystal Style"],
+        "Character Beauty": ["Crystal Skin Finish"],
+        "Hair Style": ["Soft Waves"],
+        "Hair + Headpiece": ["Pearl Crown"],
+        "Outfit / Body Style": ["Sheer Embellished Dress"],
+        "Ethnicity": ["East African"],
+        "Hair Color": ["Rose Gold"],
+        "Hair Gems": ["Crystal Pins"],
+        "Animal": ["Swan"],
+        "Butterflies": ["Crystal Butterflies"],
+        "Zodiac Energy": ["Libra Balance Glow"],
+        "Color Palette": ["Silver Blue"],
+        "Extra Elements": ["Glitter Rain"],
+        "Flowers": ["Orchids"],
+        "Lashes": ["Soft Flutter Lashes"],
+        "Elements": ["Crystal"],
+        "Accessories": ["Crystal Collar"],
+        "Hair Edges": ["Soft Curled Edges"],
+        "Skin Tone": ["Soft Caramel"],
+        "Camera Control": ["Eye Level"],
+        "Light and Shadow Control": ["Reflective Glow"]
+      },
+      "Electric Bloom Siren": {
+        "Main Subject": ["Surreal Muse"],
+        "Eye Color": ["Neon Pink"],
+        "Environment": ["Neon City"],
+        "Fountain Type": ["Butterfly Fountain"],
+        "Rose Style": ["None"],
+        "Animal Style": ["Neon Style"],
+        "Character Beauty": ["Metallic Glam"],
+        "Hair Style": ["High Ponytail"],
+        "Hair + Headpiece": ["Orb Halo"],
+        "Outfit / Body Style": ["One Shoulder Dress"],
+        "Ethnicity": ["Trinidadian"],
+        "Hair Color": ["Teal"],
+        "Hair Gems": ["Holographic Crystals"],
+        "Animal": ["Phoenix"],
+        "Butterflies": ["Floating Neon Butterflies"],
+        "Zodiac Energy": ["Aquarius Electric Vision"],
+        "Color Palette": ["Bright Neon"],
+        "Extra Elements": ["Neon Trails"],
+        "Flowers": ["Neon Roses"],
+        "Lashes": ["Ultra Dramatic Lashes"],
+        "Elements": ["Electricity"],
+        "Accessories": ["Arm Cuffs"],
+        "Hair Edges": ["Styled Flick Edges"],
+        "Skin Tone": ["Radiant Bronze"],
+        "Camera Control": ["Tracking Shot"],
+        "Light and Shadow Control": ["Electric Glow"]
+      }
+    };
+
+    const optionalRandomCategories = new Set([
+      "Fountain Type",
+      "Rose Style",
+      "Animal Style",
+      "Animal",
+      "Butterflies",
+      "Zodiac Energy",
+      "Flowers",
+      "Extra Elements"
+    ]);
+
+    const stronglyOptionalRandomCategories = new Set([
+      "Animal",
+      "Animal Style"
+    ]);
+
+    const presetSelect = document.getElementById("presetSelect");
+    const controlsContainer = document.getElementById("controls");
+
+    function populatePresetSelect() {
+      Object.keys(presets).sort().forEach(name => {
+        const option = document.createElement("option");
+        option.value = name;
+        option.textContent = name;
+        presetSelect.appendChild(option);
+      });
+    }
+
+    function buildControls() {
+      Object.keys(categories).forEach(key => {
+        const wrapper = document.createElement("div");
+        wrapper.className = "field";
+
+        const label = document.createElement("label");
+        label.setAttribute("for", key);
+        label.textContent = key;
+
+        const note = document.createElement("div");
+        note.className = "field-note";
+        note.textContent = "Select one or more options.";
+
+        const select = document.createElement("select");
+        select.id = key;
+        select.multiple = true;
+
+        categories[key].forEach(value => {
+          const option = document.createElement("option");
+          option.value = value;
+          option.textContent = value;
+          select.appendChild(option);
+        });
+
+        select.options[0].selected = true;
+
+        wrapper.appendChild(label);
+        wrapper.appendChild(note);
+        wrapper.appendChild(select);
+        controlsContainer.appendChild(wrapper);
+      });
+    }
+
+    function getSelectedValues(id) {
+      const select = document.getElementById(id);
+      return Array.from(select.selectedOptions)
+        .map(opt => opt.value)
+        .filter(v => v !== "None");
+    }
+
+    function setSelectedValues(id, values) {
+      const select = document.getElementById(id);
+      Array.from(select.options).forEach(option => option.selected = false);
+
+      if (!values || values.length === 0 || (values.length === 1 && values[0] === "None")) {
+        select.options[0].selected = true;
+        return;
+      }
+
+      let matched = false;
+      values.forEach(val => {
+        const option = Array.from(select.options).find(opt => opt.value === val);
+        if (option) {
+          option.selected = true;
+          matched = true;
+        }
+      });
+
+      if (!matched) select.options[0].selected = true;
+    }
+
+    function clearSelect(id) {
+      const select = document.getElementById(id);
+      Array.from(select.options).forEach(option => option.selected = false);
+      select.options[0].selected = true;
+    }
+
+    function valuesToPhrase(values, fallback = "") {
+      if (!values || values.length === 0) return fallback;
+      if (values.length === 1) return values[0].toLowerCase();
+      if (values.length === 2) return `${values[0].toLowerCase()} and ${values[1].toLowerCase()}`;
+      return `${values.slice(0, -1).map(v => v.toLowerCase()).join(", ")}, and ${values[values.length - 1].toLowerCase()}`;
+    }
+
+    function valuesToSentence(label, values) {
+      if (!values || values.length === 0) return "";
+      return `${label}: ${values.join(", ")}.`;
+    }
+
+    function applyPreset() {
+      const presetName = presetSelect.value;
+      if (!presetName || presetName === "None") return;
+
+      const preset = presets[presetName];
+      Object.keys(categories).forEach(key => {
+        if (preset[key]) {
+          setSelectedValues(key, preset[key]);
+        } else {
+          clearSelect(key);
+        }
+      });
+
+      generatePrompt();
+    }
+
+    function randomize() {
+      Object.keys(categories).forEach(key => {
+        const select = document.getElementById(key);
+        Array.from(select.options).forEach(option => option.selected = false);
+
+        if (stronglyOptionalRandomCategories.has(key)) {
+          const leaveBlank = Math.random() < 0.82;
+          if (leaveBlank) {
+            select.options[0].selected = true;
+            return;
+          }
+        } else if (optionalRandomCategories.has(key)) {
+          const leaveBlank = Math.random() < 0.45;
+          if (leaveBlank) {
+            select.options[0].selected = true;
+            return;
+          }
+        }
+
+        const availableOptions = Array.from(select.options).slice(1);
+        const randomIndex = Math.floor(Math.random() * availableOptions.length);
+        availableOptions[randomIndex].selected = true;
+      });
+
+      generatePrompt();
+    }
+
+    function clearAll() {
+      Object.keys(categories).forEach(key => clearSelect(key));
+      presetSelect.value = "None";
+      document.getElementById("photoOutput").value = "";
+      document.getElementById("videoOutput").value = "";
+    }
+
+    function generatePrompt() {
+      const mainSubject = getSelectedValues("Main Subject");
+      const eyeColor = getSelectedValues("Eye Color");
+      const environment = getSelectedValues("Environment");
+      const fountainType = getSelectedValues("Fountain Type");
+      const roseStyle = getSelectedValues("Rose Style");
+      const animalStyle = getSelectedValues("Animal Style");
+      const characterBeauty = getSelectedValues("Character Beauty");
+      const hairStyle = getSelectedValues("Hair Style");
+      const hairHeadpiece = getSelectedValues("Hair + Headpiece");
+      const outfitBody = getSelectedValues("Outfit / Body Style");
+      const ethnicity = getSelectedValues("Ethnicity");
+      const hairColor = getSelectedValues("Hair Color");
+      const hairGems = getSelectedValues("Hair Gems");
+      const animal = getSelectedValues("Animal");
+      const butterflies = getSelectedValues("Butterflies");
+      const zodiacEnergy = getSelectedValues("Zodiac Energy");
+      const colorPalette = getSelectedValues("Color Palette");
+      const extraElements = getSelectedValues("Extra Elements");
+      const flowers = getSelectedValues("Flowers");
+      const lashes = getSelectedValues("Lashes");
+      const elements = getSelectedValues("Elements");
+      const accessories = getSelectedValues("Accessories");
+      const hairEdges = getSelectedValues("Hair Edges");
+      const skinTone = getSelectedValues("Skin Tone");
+      const cameraControl = getSelectedValues("Camera Control");
+      const lightShadow = getSelectedValues("Light and Shadow Control");
+
+      const chosenEnvironment = valuesToPhrase(
+        environment,
+        "a breathtaking night-time luxury cityscape with reflective water, celestial atmosphere, glowing fountain architecture, and cinematic depth suited to a surreal gallery masterpiece"
+      );
+
+      const chosenMainSubject = valuesToPhrase(
+        mainSubject,
+        "a stunning hyper-glamorous divine feminine figure"
+      );
+
+      const chosenFountain = valuesToPhrase(
+        fountainType,
+        "luminous sculptural fountain monument"
+      );
+
+      const chosenRoseStyle = valuesToPhrase(roseStyle);
+      const chosenAnimalStyle = valuesToPhrase(animalStyle);
+      const chosenBeauty = valuesToPhrase(characterBeauty);
+      const chosenEyes = valuesToPhrase(eyeColor);
+      const chosenHairStyle = valuesToPhrase(hairStyle);
+      const chosenHairColor = valuesToPhrase(hairColor);
+      const chosenHairGems = valuesToPhrase(hairGems);
+      const chosenHeadpiece = valuesToPhrase(hairHeadpiece);
+      const chosenOutfit = valuesToPhrase(outfitBody);
+      const chosenEthnicity = valuesToPhrase(ethnicity);
+      const chosenAnimal = valuesToPhrase(animal);
+      const chosenButterflies = valuesToPhrase(butterflies);
+      const chosenZodiac = valuesToPhrase(zodiacEnergy);
+      const chosenPalette = valuesToPhrase(colorPalette);
+      const chosenExtras = valuesToPhrase(extraElements);
+      const chosenFlowers = valuesToPhrase(flowers);
+      const chosenLashes = valuesToPhrase(lashes);
+      const chosenElements = valuesToPhrase(elements);
+      const chosenAccessories = valuesToPhrase(accessories);
+      const chosenEdges = valuesToPhrase(hairEdges);
+      const chosenSkin = valuesToPhrase(skinTone);
+      const chosenCamera = valuesToPhrase(cameraControl, "wide cinematic");
+      const chosenLight = valuesToPhrase(lightShadow, "cinematic contrast, glowing highlights, deep sculpted shadows, and luminous reflections");
+
+      const fountainDescriptor = [];
+      if (chosenFountain) fountainDescriptor.push(chosenFountain);
+      if (chosenRoseStyle && chosenFountain.includes("rose")) fountainDescriptor.push(`with ${chosenRoseStyle} styling`);
+      const fountainSentence = fountainDescriptor.length
+        ? fountainDescriptor.join(" ")
+        : "luminous sculptural fountain monument";
+
+      const lookLines = [
+        chosenSkin ? `- Skin tone: ${chosenSkin}` : "",
+        chosenBeauty ? `- Beauty style: ${chosenBeauty}` : "",
+        chosenEyes ? `- Eye color: ${chosenEyes}` : "",
+        chosenLashes ? `- Lashes: ${chosenLashes}` : "",
+        chosenHairStyle ? `- Hairstyle: ${chosenHairStyle}` : "",
+        chosenHairColor ? `- Hair color: ${chosenHairColor}` : "",
+        chosenHairGems ? `- Hair gems: ${chosenHairGems}` : "",
+        chosenEdges ? `- Hair edges: ${chosenEdges}` : "",
+        chosenEthnicity ? `- Ethnicity inspiration: ${chosenEthnicity}` : "",
+        chosenHeadpiece ? `- Headpiece / mask / halo: ${chosenHeadpiece}` : "",
+        chosenOutfit ? `- Outfit / body styling: ${chosenOutfit}` : "",
+        chosenAccessories ? `- Accessories: ${chosenAccessories}` : ""
+      ].filter(Boolean).join("\n");
+
+      let animalSection = "No animal symbolism is required unless selected.";
+      if (chosenAnimal && chosenAnimalStyle) {
+        animalSection = `Also integrate ${chosenAnimal} symbolism in a tasteful way that suits the composition, rendered in ${chosenAnimalStyle}. The creature symbolism should represent power, mysticism, protection, and visual storytelling.`;
+      } else if (chosenAnimal) {
+        animalSection = `Also integrate ${chosenAnimal} symbolism in a tasteful way that suits the composition. The creature symbolism should represent power, mysticism, protection, and visual storytelling.`;
+      } else if (chosenAnimalStyle) {
+        animalSection = `Animal style is selected as ${chosenAnimalStyle}, but no animal is required unless selected.`;
+      }
+
+      const additionalParts = [
+        chosenExtras,
+        chosenFlowers,
+        chosenButterflies,
+        chosenZodiac,
+        chosenElements ? `environmental traces of ${chosenElements}` : ""
+      ].filter(Boolean);
+
+      const additionalSentence = additionalParts.length
+        ? `Include ${additionalParts.join(", ")}. Add constellation lines connecting the major selected elements like destiny. Include subtle stars, glowing particles, symbolic energy trails, and fine-art visual drama.`
+        : `Include subtle stars, glowing particles, symbolic energy trails, and fine-art visual drama.`;
+
+      const colorSection = chosenPalette
+        ? `Use ${chosenPalette}.`
+        : `Keep the color palette rich, cinematic, and suited to the chosen subject matter.`;
+
+      const summaryLines = [
+        valuesToSentence("Main Subject", mainSubject),
+        valuesToSentence("Eye Color", eyeColor),
+        valuesToSentence("Environment", environment),
+        valuesToSentence("Fountain Type", fountainType),
+        valuesToSentence("Rose Style", roseStyle),
+        valuesToSentence("Animal Style", animalStyle),
+        valuesToSentence("Character Beauty", characterBeauty),
+        valuesToSentence("Hair Style", hairStyle),
+        valuesToSentence("Hair + Headpiece", hairHeadpiece),
+        valuesToSentence("Outfit / Body Style", outfitBody),
+        valuesToSentence("Ethnicity", ethnicity),
+        valuesToSentence("Hair Color", hairColor),
+        valuesToSentence("Hair Gems", hairGems),
+        valuesToSentence("Animal", animal),
+        valuesToSentence("Butterflies", butterflies),
+        valuesToSentence("Zodiac Energy", zodiacEnergy),
+        valuesToSentence("Color Palette", colorPalette),
+        valuesToSentence("Extra Elements", extraElements),
+        valuesToSentence("Flowers", flowers),
+        valuesToSentence("Lashes", lashes),
+        valuesToSentence("Elements", elements),
+        valuesToSentence("Accessories", accessories),
+        valuesToSentence("Hair Edges", hairEdges),
+        valuesToSentence("Skin Tone", skinTone),
+        valuesToSentence("Camera Control", cameraControl),
+        valuesToSentence("Light and Shadow Control", lightShadow)
+      ].filter(Boolean).join("\n");
+
+      const photoPrompt = `
+FULL PROMPT PACK
+
+Selected details summary:
+${summaryLines || "No selections made."}
+
+Create an ultra-dramatic, gallery-worthy surreal fantasy artwork that blends luxury editorial portraiture, celestial dreamscape, Afrofuturist elegance, and high-end digital painting. The composition must feel like a museum centerpiece, rich with symbolism, luminous color, and cinematic lighting. This belongs in a high-end gallery and people won’t stop staring.
+
+MAIN COMPOSITION:
+A breathtaking night-time fantasy scene set in ${chosenEnvironment}. The background should feel magical, futuristic, luxurious, and visually suitable for the subject matter, with layered depth, reflective surfaces, elegant architecture, glowing atmosphere, and cinematic environmental storytelling. At the center-left stands a massive ${fountainSentence} towering like a monument. It features synchronized glowing water jets, luminous reflections, sculptural curves, premium fantasy detailing, and a dramatic circular fountain pool. The water mirrors the surrounding light in shimmering reflections.
+
+MAIN SUBJECT:
+Feature ${chosenMainSubject} as the dominant focal point on the right side or towering behind the city in giant monumental scale. She must feel divine, regal, commanding, mysterious, and unforgettable. Each render must feature a uniquely distinct face, pose, and styling while maintaining the same overall luxury-surreal aesthetic. No repeated face structure, no repeated pose, no repeated styling formula.
+${lookLines ? `\nHer look should include:\n${lookLines}` : ""}
+
+ANIMAL SYMBOLISM:
+${animalSection}
+
+ADDITIONAL ELEMENTS:
+${additionalSentence}
+
+CAMERA AND CINEMATIC DIRECTION:
+Use ${chosenCamera} framing and composition. Make the shot feel intentional, expensive, and visually commanding.
+
+LIGHTING AND SHADOWS:
+Use ${chosenLight}.
+
+COLOR PALETTE:
+${colorSection}
+
+ART STYLE:
+Ultra-detailed digital painting, surreal fantasy realism, luxury editorial fine art, glossy high-end retouching, hyper-detailed textures, glowing neon surrealism, museum-worthy concept art, polished cinematic layering, rich depth, premium composition, 8K visual intensity.
+
+FINAL VIBE:
+Powerful, regal, dreamlike, luxurious, feminine divine energy, unforgettable show-stopper masterpiece.
+      `.trim();
+
+      const motionParts = [
+        chosenExtras,
+        chosenFlowers,
+        chosenButterflies,
+        chosenZodiac,
+        chosenElements ? `traces of ${chosenElements}` : ""
+      ].filter(Boolean);
+
+      const motionSentence = motionParts.length
+        ? `Layer in ${motionParts.join(", ")}.`
+        : `Keep the motion clean and focused with no extra symbolic layers unless selected.`;
+
+      let secondaryReveal = "No animal reveal is required unless selected.";
+      if (chosenAnimal && chosenAnimalStyle) {
+        secondaryReveal = `Show ${chosenAnimal} imagery rendered in ${chosenAnimalStyle}, integrated tastefully into the world.`;
+      } else if (chosenAnimal) {
+        secondaryReveal = `Show ${chosenAnimal} imagery integrated tastefully into the world.`;
+      }
+
+      const revealLookParts = [
+        chosenSkin ? `${chosenSkin} skin` : "",
+        chosenBeauty || "",
+        chosenEyes ? `${chosenEyes} eyes` : "",
+        chosenLashes || "",
+        chosenHairStyle || "",
+        chosenHairColor ? `${chosenHairColor} hair` : "",
+        chosenHairGems || "",
+        chosenEdges || "",
+        chosenHeadpiece || "",
+        chosenAccessories || "",
+        chosenOutfit || ""
+      ].filter(Boolean).join(", ");
+
+      const ethnicitySentence = chosenEthnicity ? ` The ethnicity inspiration is ${chosenEthnicity}.` : "";
+
+      const videoPrompt = `
+VIDEO SCRIPT PROMPT
+
+Create a cinematic video prompt for a surreal luxury fantasy art sequence. The visual world should match a museum-worthy Afrofuturist dreamscape with celestial elegance, luxury editorial glamour, and high-end digital fantasy.
+
+Selected details:
+${summaryLines || "No selections made."}
+
+SCENE SETUP:
+Open on ${chosenEnvironment}. A giant glowing ${fountainSentence} rises from reflective water with synchronized luminous water jets and shimmering mirrored reflections. The environment is rich, dramatic, symbolic, and visually suitable to the subject matter.
+
+MAIN REVEAL:
+Introduce ${chosenMainSubject}${revealLookParts ? ` with ${revealLookParts}` : ""}.${ethnicitySentence} Her face, pose, and styling must be uniquely distinct in this render while preserving the same grand luxury-surreal aesthetic.
+
+ANIMAL REVEAL:
+${secondaryReveal}
+
+MOTION DIRECTION:
+Use ${chosenCamera} movement with slow reveal pacing, elegant push-ins, dramatic angle changes, rich depth, and premium visual flow. Show constellation lines connecting the major selected elements like destiny. ${motionSentence}
+
+LIGHTING AND COLOR:
+Use ${chosenLight}.${chosenPalette ? ` Use a ${chosenPalette} palette.` : ` Use a palette that suits the selected subject matter and mood.`}
+
+ART DIRECTION:
+Ultra-luxurious, surreal, polished, dreamlike, expensive-looking, gallery-level, cinematic fantasy masterpiece. The final sequence should feel like the greatest show-stopping artwork brought to life.
+      `.trim();
+
+      document.getElementById("photoOutput").value = photoPrompt;
+      document.getElementById("videoOutput").value = videoPrompt;
+    }
+
+    function copyPhotoPrompt() {
+      const textarea = document.getElementById("photoOutput");
+      textarea.select();
+      textarea.setSelectionRange(0, 999999);
+      document.execCommand("copy");
+    }
+
+    function copyVideoPrompt() {
+      const textarea = document.getElementById("videoOutput");
+      textarea.select();
+      textarea.setSelectionRange(0, 999999);
+      document.execCommand("copy");
+    }
+
+    populatePresetSelect();
+    buildControls();
+  </script>
+</body>
+</html>
