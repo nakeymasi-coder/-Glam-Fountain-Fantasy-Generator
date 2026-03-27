@@ -877,17 +877,27 @@ Ultra-luxurious, surreal, polished, dreamlike, expensive-looking, gallery-level,
     }
 
     function copyPhotoPrompt() {
-      const textarea = document.getElementById("photoOutput");
-      textarea.select();
-      textarea.setSelectionRange(0, 999999);
-      document.execCommand("copy");
+      const text = document.getElementById("photoOutput").value;
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(text);
+      } else {
+        const textarea = document.getElementById("photoOutput");
+        textarea.select();
+        textarea.setSelectionRange(0, textarea.value.length);
+        document.execCommand("copy");
+      }
     }
 
     function copyVideoPrompt() {
-      const textarea = document.getElementById("videoOutput");
-      textarea.select();
-      textarea.setSelectionRange(0, 999999);
-      document.execCommand("copy");
+      const text = document.getElementById("videoOutput").value;
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(text);
+      } else {
+        const textarea = document.getElementById("videoOutput");
+        textarea.select();
+        textarea.setSelectionRange(0, textarea.value.length);
+        document.execCommand("copy");
+      }
     }
 
     populatePresetSelect();
